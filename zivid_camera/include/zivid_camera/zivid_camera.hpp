@@ -129,7 +129,7 @@ private:
   void publishColorImage(
     const std_msgs::msg::Header & header,
     const sensor_msgs::msg::CameraInfo::ConstSharedPtr & camera_info,
-    const Zivid::Image<Zivid::ColorRGBA> & image);
+    const Zivid::Image<Zivid::ColorBGRA> & image);
   void publishDepthImage(
     const std_msgs::msg::Header & header,
     const sensor_msgs::msg::CameraInfo::ConstSharedPtr & camera_info,

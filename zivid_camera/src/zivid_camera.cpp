@@ -604,7 +604,7 @@ void ZividCamera::capture2DServiceHandler(
       auto frame2D = camera_->capture(settings2D);
       if (shouldPublishColorImg()) {
         const auto header = makeHeader();
-        auto image = frame2D.imageRGBA();
+        auto image = frame2D.imageBGRA();
         const auto intrinsics = Zivid::Experimental::Calibration::intrinsics(*camera_);
         const auto camera_info = makeCameraInfo(header, image.width(), image.height(), intrinsics);
         publishColorImage(header, camera_info, image);
@@ -828,18 +828,18 @@ void ZividCamera::publishColorImage(
   RCLCPP_INFO_STREAM(
     get_logger(), "Publishing " << color_image_publisher_.getTopic() << " from point cloud");
   auto image =
-    makePointCloudImage<Zivid::ColorRGBA>(point_cloud, header, sensor_msgs::image_encodings::RGBA8);
+    makePointCloudImage<Zivid::ColorBGRA>(point_cloud, header, sensor_msgs::image_encodings::BGRA8);
   color_image_publisher_.publish(image, camera_info);
 }
 
 void ZividCamera::publishColorImage(
   const std_msgs::msg::Header & header,
   const sensor_msgs::msg::CameraInfo::ConstSharedPtr & camera_info,
-  const Zivid::Image<Zivid::ColorRGBA> & image)
+  const Zivid::Image<Zivid::ColorBGRA> & image)
 {
   RCLCPP_INFO_STREAM(
     get_logger(), "Publishing " << color_image_publisher_.getTopic() << " from Image");
-  auto msg = makeImage(header, sensor_msgs::image_encodings::RGBA8, image.width(), image.height());
+  auto msg = makeImage(header, sensor_msgs::image_encodings::BGRA8, image.width(), image.height());
   const auto uint8_ptr_begin = reinterpret_cast<const uint8_t *>(image.data());
 
 #ifdef __clang__
